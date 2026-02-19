@@ -1,12 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Mon App</title>
+  <title>Gestion Boîtes</title>
 </head>
 <body>
-    <h1>Bonjour 👋</h1>
-    <button onclick="direBonjour()">Clique moi</button>
 
-    <script src="script.js"></script>
+<h2>Créer une Boîte</h2>
+
+<input id="rfid" placeholder="RFID">
+<input id="emplacement" placeholder="Emplacement">
+<input id="masse" placeholder="Masse">
+<button onclick="createBoite()">Créer</button>
+
+<h2>Liste des Boîtes</h2>
+<div id="boites"></div>
+
+<script>
+let boites = [];
+
+function createBoite() {
+  const rfid = document.getElementById("rfid").value;
+  const emplacement = document.getElementById("emplacement").value;
+  const masse = document.getElementById("masse").value;
+
+  if (!rfid || !emplacement || !masse) {
+    alert("Remplis tous les champs !");
+    return;
+  }
+
+  boites.push({ rfid, emplacement, masse });
+  afficherBoites();
+}
+
+function afficherBoites() {
+  const container = document.getElementById("boites");
+  container.innerHTML = "";
+
+  boites.forEach((b, index) => {
+    container.innerHTML += `
+      <div>
+        <strong>#${index + 1}</strong> ${b.rfid} - ${b.emplacement} - ${b.masse}g
+      </div>
+    `;
+  });
+}
+</script>
+
 </body>
 </html>
