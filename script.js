@@ -1,7 +1,72 @@
 import { supabase } from "./client.js"
 
 
-// charger les boites
+
+async function loadComposants(){
+
+const { data, error } = await supabase
+.from("COMPOSANT")
+.select("*")
+
+if(error){
+console.error(error)
+return
+}
+
+afficherComposants(data)
+
+}
+
+window.loadComposants = loadComposants
+
+
+
+async function searchComposants(){
+
+const search = document.getElementById("search").value
+
+const { data, error } = await supabase
+.from("COMPOSANT")
+.select("*")
+.or(`Nom_Comp.ilike.%${search}%,Ref_Comp.ilike.%${search}%`)
+
+if(error){
+console.error(error)
+return
+}
+
+afficherComposants(data)
+
+}
+
+window.searchComposants = searchComposants
+
+
+
+function afficherComposants(composants){
+
+const table = document.getElementById("tableComposants")
+
+table.innerHTML = ""
+
+composants.forEach(c => {
+
+table.innerHTML += `
+<tr>
+<td>${c.Num_Comp}</td>
+<td>${c.Nom_Comp}</td>
+<td>${c.Ref_Comp}</td>
+<td>${c.Masse_Comp}</td>
+<td>${c.Nb_Comp}</td>
+</tr>
+`
+
+})
+
+}
+
+
+
 async function loadBoites(){
 
 const { data, error } = await supabase
@@ -13,8 +78,8 @@ console.error(error)
 return
 }
 
-const table = document.getElementById("boites")
-table.innerHTML=""
+const table = document.getElementById("tableBoites")
+table.innerHTML = ""
 
 data.forEach(b => {
 
@@ -32,44 +97,3 @@ table.innerHTML += `
 }
 
 window.loadBoites = loadBoites
-
-
-
-// rechercher composants
-async function searchComposants(){
-
-const search = document.getElementById("search").value
-
-const { data, error } = await supabase
-.from("COMPOSANT")
-.select("*")
-.or(`Nom_Comp.ilike.%${search}%,Ref_Comp.ilike.%${search}%`)
-
-if(error){
-console.error(error)
-return
-}
-
-const resultats = document.getElementById("resultats")
-resultats.innerHTML=""
-
-if(data.length === 0){
-resultats.innerHTML = "Aucun composant trouvé"
-return
-}
-
-data.forEach(c => {
-
-resultats.innerHTML += `
-<div class="result">
-<b>${c.Nom_Comp}</b><br>
-Référence : ${c.Ref_Comp}<br>
-Quantité : ${c.Nb_Comp}
-</div>
-`
-
-})
-
-}
-
-window.searchComposants = searchComposants
