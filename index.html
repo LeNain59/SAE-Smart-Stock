@@ -16,20 +16,39 @@
 <div class="container">
 
 <section>
+
 <h2>Recherche de composants</h2>
 
-<input type="text" id="search" placeholder="Nom ou référence composant">
+<input type="text" id="search" placeholder="Nom ou référence du composant">
 <button onclick="searchComposants()">Rechercher</button>
+<button onclick="loadComposants()">Afficher tous</button>
 
-<div id="resultats"></div>
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Nom</th>
+<th>Référence</th>
+<th>Masse</th>
+<th>Quantité</th>
+</tr>
+</thead>
+
+<tbody id="tableComposants"></tbody>
+
+</table>
+
 </section>
 
 
 <section>
+
 <h2>Boîtes présentes</h2>
 <button onclick="loadBoites()">Actualiser</button>
 
 <table>
+
 <thead>
 <tr>
 <th>Numéro</th>
@@ -39,7 +58,8 @@
 </tr>
 </thead>
 
-<tbody id="boites"></tbody>
+<tbody id="tableBoites"></tbody>
+
 </table>
 
 </section>
