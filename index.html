@@ -1,50 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Gestion Boîtes</title>
+  <title>Gestion Stockage Automatisé</title>
 </head>
 <body>
 
-<h2>Créer une Boîte</h2>
+<h1>Gestion du stockage</h1>
 
-<input id="rfid" placeholder="RFID">
-<input id="emplacement" placeholder="Emplacement">
-<input id="masse" placeholder="Masse">
-<button onclick="createBoite()">Créer</button>
-
-<h2>Liste des Boîtes</h2>
+<h2>Boîtes présentes</h2>
+<button onclick="loadBoites()">Actualiser</button>
 <div id="boites"></div>
 
-<script>
-let boites = [];
+<h2>Composants disponibles</h2>
 
-function createBoite() {
-  const rfid = document.getElementById("rfid").value;
-  const emplacement = document.getElementById("emplacement").value;
-  const masse = document.getElementById("masse").value;
+<input id="search" placeholder="Rechercher nom ou ref">
+<button onclick="searchComposant()">Rechercher</button>
 
-  if (!rfid || !emplacement || !masse) {
-    alert("Remplis tous les champs !");
-    return;
-  }
+<div id="composants"></div>
 
-  boites.push({ rfid, emplacement, masse });
-  afficherBoites();
-}
-
-function afficherBoites() {
-  const container = document.getElementById("boites");
-  container.innerHTML = "";
-
-  boites.forEach((b, index) => {
-    container.innerHTML += `
-      <div>
-        <strong>#${index + 1}</strong> ${b.rfid} - ${b.emplacement} - ${b.masse}g
-      </div>
-    `;
-  });
-}
-</script>
+<script type="module" src="app.js"></script>
 
 </body>
 </html>
