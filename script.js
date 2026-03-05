@@ -1,55 +1,75 @@
 import { supabase } from "./client.js"
 
-async function loadBoites() {
 
-  const { data, error } = await supabase
-    .from("BOITES")
-    .select("*")
+// charger les boites
+async function loadBoites(){
 
-  if (error) {
-    console.error(error)
-    return
-  }
+const { data, error } = await supabase
+.from("BOITES")
+.select("*")
 
-  const container = document.getElementById("boites")
-  container.innerHTML = ""
+if(error){
+console.error(error)
+return
+}
 
-  data.forEach(b => {
-    container.innerHTML += `
-      <div>
-        Boite #${b.Num_Boite} | RFID: ${b.RFID_Boite} | Emplacement: ${b.Emplacement_Boite}
-      </div>
-    `
-  })
+const table = document.getElementById("boites")
+table.innerHTML=""
+
+data.forEach(b => {
+
+table.innerHTML += `
+<tr>
+<td>${b.Num_Boite}</td>
+<td>${b.RFID_Boite}</td>
+<td>${b.Emplacement_Boite}</td>
+<td>${b.Masse_Boite}</td>
+</tr>
+`
+
+})
+
 }
 
 window.loadBoites = loadBoites
 
 
-async function searchComposant() {
 
-  const search = document.getElementById("search").value
+// rechercher composants
+async function searchComposants(){
 
-  const { data, error } = await supabase
-    .from("COMPOSANT")
-    .select("*")
-    .or(`Nom_Comp.ilike.%${search}%,Ref_Comp.ilike.%${search}%`)
+const search = document.getElementById("search").value
 
-  if (error) {
-    console.error(error)
-    return
-  }
+const { data, error } = await supabase
+.from("COMPOSANT")
+.select("*")
+.or(`Nom_Comp.ilike.%${search}%,Ref_Comp.ilike.%${search}%`)
 
-  const container = document.getElementById("composants")
-  container.innerHTML = ""
-
-  data.forEach(c => {
-    container.innerHTML += `
-      <div>
-        ${c.Nom_Comp} | Ref: ${c.Ref_Comp} | Quantité: ${c.Nb_Comp}
-      </div>
-    `
-  })
+if(error){
+console.error(error)
+return
 }
 
-window.searchComposant = searchComposant
+const resultats = document.getElementById("resultats")
+resultats.innerHTML=""
+
+if(data.length === 0){
+resultats.innerHTML = "Aucun composant trouvé"
+return
+}
+
+data.forEach(c => {
+
+resultats.innerHTML += `
+<div class="result">
+<b>${c.Nom_Comp}</b><br>
+Référence : ${c.Ref_Comp}<br>
+Quantité : ${c.Nb_Comp}
+</div>
+`
+
+})
+
+}
+
+window.searchComposants = searchComposants
