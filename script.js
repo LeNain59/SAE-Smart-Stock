@@ -1,7 +1,13 @@
-import { supabase } from "./client.js"
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm"
+
+// connexion Supabase
+const supabaseUrl = "https://zlbidvslsnoqkpkjtyhq.supabase.co"
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsYmlkdnNsc25vcWtwa2p0eWhxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAzNjUxNzAsImV4cCI6MjA4NTk0MTE3MH0.4YomOs5WKljLyMssHrQUeLMDZJejl7A45jSifLV-vzM"
+
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 
-
+// charger composants
 async function loadComposants(){
 
 const { data, error } = await supabase
@@ -17,10 +23,8 @@ afficherComposants(data)
 
 }
 
-window.loadComposants = loadComposants
 
-
-
+// recherche composants
 async function searchComposants(){
 
 const search = document.getElementById("search").value
@@ -39,15 +43,12 @@ afficherComposants(data)
 
 }
 
-window.searchComposants = searchComposants
 
-
-
+// afficher composants
 function afficherComposants(composants){
 
 const table = document.getElementById("tableComposants")
-
-table.innerHTML = ""
+table.innerHTML=""
 
 composants.forEach(c => {
 
@@ -66,7 +67,7 @@ table.innerHTML += `
 }
 
 
-
+// charger boites
 async function loadBoites(){
 
 const { data, error } = await supabase
@@ -79,7 +80,7 @@ return
 }
 
 const table = document.getElementById("tableBoites")
-table.innerHTML = ""
+table.innerHTML=""
 
 data.forEach(b => {
 
@@ -96,4 +97,13 @@ table.innerHTML += `
 
 }
 
+
+// rendre les fonctions accessibles au HTML
 window.loadBoites = loadBoites
+window.loadComposants = loadComposants
+window.searchComposants = searchComposants
+
+
+// chargement automatique
+loadBoites()
+loadComposants()
