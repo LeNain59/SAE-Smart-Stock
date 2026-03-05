@@ -1,22 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-  <title>Gestion Stockage Automatisé</title>
+<meta charset="UTF-8">
+<title>Gestion Stockage Automatisé</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>Gestion du stockage</h1>
+<header>
+<h1>Gestion du Stockage Automatisé</h1>
+</header>
 
+<div class="container">
+
+<section>
+<h2>Recherche de composants</h2>
+
+<input type="text" id="search" placeholder="Nom ou référence composant">
+<button onclick="searchComposants()">Rechercher</button>
+
+<div id="resultats"></div>
+</section>
+
+
+<section>
 <h2>Boîtes présentes</h2>
 <button onclick="loadBoites()">Actualiser</button>
-<div id="boites"></div>
 
-<h2>Composants disponibles</h2>
+<table>
+<thead>
+<tr>
+<th>Numéro</th>
+<th>RFID</th>
+<th>Emplacement</th>
+<th>Masse</th>
+</tr>
+</thead>
 
-<input id="search" placeholder="Rechercher nom ou ref">
-<button onclick="searchComposant()">Rechercher</button>
+<tbody id="boites"></tbody>
+</table>
 
-<div id="composants"></div>
+</section>
+
+</div>
 
 <script type="module" src="app.js"></script>
 
