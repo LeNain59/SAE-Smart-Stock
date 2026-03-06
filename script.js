@@ -101,18 +101,18 @@ async function envoyerOrdre() {
     // lire ordre
     const { data: ordreData } = await supabase
         .from("Ordre")
-        .select("ordre-mouv")
+        .select("ordre_mouv")
         .eq("id", 1)
         .single()
 
-    let ordre = ordreData["ordre-mouv"]
+    let ordre = ordreData["ordre_mouv"]
 
     if (ordre === 0) {
 
         // lancer ordre
         await supabase
             .from("Ordre")
-            .update({ "ordre-mouv": 1 })
+            .update({ "ordre_mouv": 1 })
             .eq("id", 1)
 
         console.log("Ordre lancé")
@@ -141,10 +141,11 @@ async function envoyerOrdre() {
 window.loadBoites = loadBoites
 window.loadComposants = loadComposants
 window.searchComposants = searchComposants
-
+window.envoyerOrdre = envoyerOrdre
 
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
