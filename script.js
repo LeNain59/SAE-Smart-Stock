@@ -96,82 +96,47 @@ table.innerHTML += `
 })
 
 }
-async function envoyerOrdre(){
+async function envoyerOrdre() {
 
-// lire ordre
-const { data: ordreData } = await supabase
-.from("Ordre")
-.select("*")
-.eq("id",1)
-.single()
+    // lire ordre
+    const { data: ordreData } = await supabase
+        .from("Ordre")
+        .select("ordre-mouv")
+        .eq("id", 1)
+        .single()
 
-// lire mémoire
-const { data: memData } = await supabase
-.from("Memoire")
-.select("*")
-.eq("id",1)
-.single()
+    let ordre = ordreData["ordre-mouv"]
 
+    if (ordre === 0) {
 
-if(ordreData.actif == 0){
+        // lancer ordre
+        await supabase
+            .from("Ordre")
+            .update({ "ordre-mouv": 1 })
+            .eq("id", 1)
 
-// lancer ordre
-await supabase
-.from("Ordre")
-.update({ actif:1 })
-.eq("id",1)
+        console.log("Ordre lancé")
 
-console.log("Ordre lancé")
+    } else {
 
-}else{
+        // ajouter en mémoire
+        const { data: memData } = await supabase
+            .from("mémoire")
+            .select("MEMOIRE")
+            .eq("id", 1)
+            .single()
 
-// ajouter en mémoire
-await supabase
-.from("Memoire")
-.update({ attente: memData.attente + 1 })
-.eq("id",1)
+        let mem = memData["MEMOIRE"]
 
-console.log("Ordre mis en attente")
+        await supabase
+            .from("mémoire")
+            .update({ MEMOIRE: mem + 1 })
+            .eq("id", 1)
 
+        console.log("Ordre ajouté en mémoire")
+    }
 }
 
-}
-
-window.envoyerOrdre = envoyerOrdre
-
-async function ordreTermine(){
-
-const { data: memData } = await supabase
-.from("Memoire")
-.select("*")
-.eq("id",1)
-.single()
-
-if(memData.attente > 0){
-
-// relancer ordre
-await supabase
-.from("Ordre")
-.update({ actif:1 })
-.eq("id",1)
-
-// diminuer mémoire
-await supabase
-.from("Memoire")
-.update({ attente: memData.attente - 1 })
-.eq("id",1)
-
-}else{
-
-// arrêter ordre
-await supabase
-.from("Ordre")
-.update({ actif:0 })
-.eq("id",1)
-
-}
-
-}
 // rendre les fonctions accessibles au HTML
 window.loadBoites = loadBoites
 window.loadComposants = loadComposants
@@ -181,4 +146,5 @@ window.searchComposants = searchComposants
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
