@@ -115,13 +115,16 @@ table.innerHTML += `
 
 
 // rendre les fonctions accessibles au HTML
+// rendre les fonctions accessibles au HTML
 window.loadBoites = loadBoites
 window.loadComposants = loadComposants
 window.searchComposants = searchComposants
 window.commande = commande
+
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
