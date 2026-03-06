@@ -119,9 +119,9 @@ async function envoyerOrdre() {
 
     } else {
 
-        // ajouter en mémoire
+        // ajouter en memoire
         const { data: memData } = await supabase
-            .from("mémoire")
+            .from("memoire")
             .select("MEMOIRE")
             .eq("id", 1)
             .single()
@@ -129,11 +129,11 @@ async function envoyerOrdre() {
         let mem = memData["MEMOIRE"]
 
         await supabase
-            .from("mémoire")
+            .from("memoire")
             .update({ MEMOIRE: mem + 1 })
             .eq("id", 1)
 
-        console.log("Ordre ajouté en mémoire")
+        console.log("Ordre ajouté en memoire")
     }
 }
 
@@ -146,6 +146,7 @@ window.envoyerOrdre = envoyerOrdre
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
