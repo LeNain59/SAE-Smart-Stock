@@ -96,8 +96,82 @@ table.innerHTML += `
 })
 
 }
+async function envoyerOrdre(){
+
+// lire ordre
+const { data: ordreData } = await supabase
+.from("Ordre")
+.select("*")
+.eq("id",1)
+.single()
+
+// lire mémoire
+const { data: memData } = await supabase
+.from("Memoire")
+.select("*")
+.eq("id",1)
+.single()
 
 
+if(ordreData.actif == 0){
+
+// lancer ordre
+await supabase
+.from("Ordre")
+.update({ actif:1 })
+.eq("id",1)
+
+console.log("Ordre lancé")
+
+}else{
+
+// ajouter en mémoire
+await supabase
+.from("Memoire")
+.update({ attente: memData.attente + 1 })
+.eq("id",1)
+
+console.log("Ordre mis en attente")
+
+}
+
+}
+
+window.envoyerOrdre = envoyerOrdre
+
+async function ordreTermine(){
+
+const { data: memData } = await supabase
+.from("Memoire")
+.select("*")
+.eq("id",1)
+.single()
+
+if(memData.attente > 0){
+
+// relancer ordre
+await supabase
+.from("Ordre")
+.update({ actif:1 })
+.eq("id",1)
+
+// diminuer mémoire
+await supabase
+.from("Memoire")
+.update({ attente: memData.attente - 1 })
+.eq("id",1)
+
+}else{
+
+// arrêter ordre
+await supabase
+.from("Ordre")
+.update({ actif:0 })
+.eq("id",1)
+
+}
+
+}
 // rendre les fonctions accessibles au HTML
 window.loadBoites = loadBoites
 window.loadComposants = loadComposants
@@ -107,3 +181,4 @@ window.searchComposants = searchComposants
 // chargement automatique
 loadBoites()
 loadComposants()
+
