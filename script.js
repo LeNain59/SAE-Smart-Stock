@@ -97,43 +97,77 @@ table.innerHTML += `
 
 }
 async function envoyerOrdre() {
-
-    // lire ordre
-    const { data: ordreData } = await supabase
-        .from("Ordre")
-        .select("ordre_mouv")
-        .eq("id", 1)
-        .maybeSingle()
-
-    let ordre = ordreData["ordre_mouv"]
-
-    if (ordre === 0) {
-
-        // lancer ordre
-        await supabase
+    try {
+        // Lire l'ordre actuel
+        const { data: ordreData, error: ordreError } = await supabase
             .from("Ordre")
-            .update({ "ordre_mouv": 1 })
+            .select("ordre_mouv")
             .eq("id", 1)
+            .maybeSingle();
 
-        console.log("Ordre lancé")
+        if (ordreError) {
+            console.error("Erreur récupération Ordre :", ordreError);
+            return;
+        }
 
-    } else {
+        if (!ordreData) {
+            console.error("Aucun ordre trouvé avec id=1");
+            return;
+        }
 
-        // ajouter en memoire
-        const { data: memData } = await supabase
-            .from("memoire")
-            .select("MEMOIRE")
-            .eq("id", 1)
-            .maybeSingle()
+        let ordre = ordreData.ordre_mouv;
 
-        let mem = memData["MEMOIRE"]
+        if (ordre === 0) {
+            // Lancer l'ordre
+            const { error: updateError } = await supabase
+                .from("Ordre")
+                .update({ ordre_mouv: 1 })
+                .eq("id", 1);
 
-        await supabase
-            .from("memoire")
-            .update({ MEMOIRE: mem + 1 })
-            .eq("id", 1)
+            if (updateError) {
+                console.error("Erreur mise à jour Ordre :", updateError);
+                return;
+            }
 
-        console.log("Ordre ajouté en memoire")
+            console.log("Ordre lancé");
+            document.getElementById("etatOrdre").innerText = "Etat : lancé";
+
+        } else {
+            // Ajouter en mémoire
+            const { data: memData, error: memError } = await supabase
+                .from("memoire")
+                .select("MEMOIRE")
+                .eq("id", 1)
+                .maybeSingle();
+
+            if (memError) {
+                console.error("Erreur récupération memoire :", memError);
+                return;
+            }
+
+            if (!memData) {
+                console.error("Aucune mémoire trouvée avec id=1");
+                return;
+            }
+
+            let mem = memData.MEMOIRE;
+
+            const { error: memUpdateError } = await supabase
+                .from("memoire")
+                .update({ MEMOIRE: mem + 1 })
+                .eq("id", 1);
+
+            if (memUpdateError) {
+                console.error("Erreur mise à jour memoire :", memUpdateError);
+                return;
+            }
+
+            console.log("Ordre ajouté en mémoire");
+            document.getElementById("etatOrdre").innerText = "Etat : ajouté en mémoire";
+        }
+
+    } catch (err) {
+        console.error("Erreur inattendue :", err);
     }
 }
 
@@ -146,6 +180,7 @@ window.envoyerOrdre = envoyerOrdre
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
