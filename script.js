@@ -102,7 +102,7 @@ async function envoyerOrdre() {
         const { data: ordreData, error: ordreError } = await supabase
             .from('Ordre')
             .select('ordre_mouv')
-            .eq('filter', 1)
+            .filter('id', 1)
             .maybeSingle();
 
         if (ordreError) {
@@ -180,6 +180,7 @@ window.envoyerOrdre = envoyerOrdre
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
