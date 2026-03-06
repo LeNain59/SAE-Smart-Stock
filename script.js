@@ -103,7 +103,7 @@ async function envoyerOrdre() {
         .from("Ordre")
         .select("ordre_mouv")
         .eq("id", 1)
-        .single()
+        .maybeSingle()
 
     let ordre = ordreData["ordre_mouv"]
 
@@ -124,7 +124,7 @@ async function envoyerOrdre() {
             .from("memoire")
             .select("MEMOIRE")
             .eq("id", 1)
-            .single()
+            .maybeSingle()
 
         let mem = memData["MEMOIRE"]
 
@@ -146,6 +146,7 @@ window.envoyerOrdre = envoyerOrdre
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
