@@ -100,9 +100,9 @@ async function envoyerOrdre() {
     try {
         // Lire l'ordre actuel
         const { data: ordreData, error: ordreError } = await supabase
-            .from("Ordre")
-            .select("ordre_mouv")
-            .eq("id", 1)
+            .from('Ordre')
+            .select('ordre_mouv')
+            .eq('id', 1)
             .maybeSingle();
 
         if (ordreError) {
@@ -120,9 +120,9 @@ async function envoyerOrdre() {
         if (ordre === 0) {
             // Lancer l'ordre
             const { error: updateError } = await supabase
-                .from("Ordre")
+                .from('Ordre')
                 .update({ ordre_mouv: 1 })
-                .eq("id", 1);
+                .eq('id', 1);
 
             if (updateError) {
                 console.error("Erreur mise à jour Ordre :", updateError);
@@ -135,9 +135,9 @@ async function envoyerOrdre() {
         } else {
             // Ajouter en mémoire
             const { data: memData, error: memError } = await supabase
-                .from("memoire")
-                .select("MEMOIRE")
-                .eq("id", 1)
+                .from('memoire')
+                .select('MEMOIRE')
+                .eq('id', 1)
                 .maybeSingle();
 
             if (memError) {
@@ -180,6 +180,7 @@ window.envoyerOrdre = envoyerOrdre
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
