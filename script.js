@@ -102,7 +102,7 @@ async function envoyerOrdre() {
         const { data: ordreData, error: ordreError } = await supabase
             .from('Ordre')
             .select('ordre_mouv')
-            .filter('id', 'eq', 1)
+            .eq('id', 1)
             .maybeSingle();
 
         if (ordreError) {
@@ -122,7 +122,7 @@ async function envoyerOrdre() {
             const { error: updateError } = await supabase
                 .from('Ordre')
                 .update({ ordre_mouv: 1 })
-                .filter('id', 'eq', 1)
+                .eq('id', 1)
 
             if (updateError) {
                 console.error("Erreur mise à jour Ordre :", updateError);
@@ -137,7 +137,7 @@ async function envoyerOrdre() {
             const { data: memData, error: memError } = await supabase
                 .from('memoire')
                 .select('MEMOIRE')
-                .filter('id', 'eq', 1)
+                .eq('id', 1)
                 .maybeSingle();
 
             if (memError) {
@@ -155,7 +155,7 @@ async function envoyerOrdre() {
             const { error: memUpdateError } = await supabase
                 .from("memoire")
                 .update({ MEMOIRE: mem + 1 })
-                .filter('id', 'eq', 1)
+                .eq('id', 1)
             
             if (memUpdateError) {
                 console.error("Erreur mise à jour memoire :", memUpdateError);
@@ -180,6 +180,7 @@ window.envoyerOrdre = envoyerOrdre
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
