@@ -88,6 +88,25 @@ return
 console.log("Commande envoyée")
 
 }
+
+async function envoyerCommande(idCommande){
+
+const { error } = await supabase
+.from("COMMANDE")
+.insert([
+{
+commande_id2: idCommande
+}
+])
+
+if(error){
+console.error("Erreur commande :", error)
+return
+}
+
+console.log("Commande envoyée")
+
+}
 // charger boites
 async function loadBoites(){
 
@@ -127,10 +146,11 @@ window.loadBoites = loadBoites
 window.loadComposants = loadComposants
 window.searchComposants = searchComposants
 window.commande = commande
-
+window.envoyerCommande = envoyerCommande
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
