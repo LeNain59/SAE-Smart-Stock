@@ -134,8 +134,10 @@ window.searchComposants = searchComposants
 
 window.envoyerCommande = envoyerCommande
 // chargement automatique
+console.log("Commande envoyée :", idCommande)
 loadBoites()
 loadComposants()
+
 
 
 
