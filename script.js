@@ -73,21 +73,7 @@ Envoyer ordre
 
 }
 
-async function commande(){
 
-const { error } = await supabase
-.from("BOITES")
-.update({id_comp: true })
-.eq("Num_Boite", 1)
-
-if(error){
-console.error("Erreur envoi commande :", error)
-return
-}
-
-console.log("Commande envoyée")
-
-}
 
 async function envoyerCommande(idCommande){
 
@@ -95,7 +81,7 @@ const { error } = await supabase
 .from("COMMANDE")
 .insert([
 {
-commande_id2: idCommande
+commande_id: idCommande
 }
 ])
 
@@ -150,6 +136,7 @@ window.envoyerCommande = envoyerCommande
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
