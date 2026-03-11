@@ -13,6 +13,7 @@ async function loadComposants(){
 const { data, error } = await supabase
 .from("COMPOSANT")
 .select("*")
+.order("Num_Comp", { ascending: true })
 
 if(error){
 console.error(error)
@@ -33,6 +34,7 @@ const { data, error } = await supabase
 .from("COMPOSANT")
 .select("*")
 .or(`Nom_Comp.ilike.%${search}%,Ref_Comp.ilike.%${search}%`)
+.order("Num_Comp", { ascending: true })
 
 if(error){
 console.error(error)
@@ -135,6 +137,7 @@ window.envoyerCommande = envoyerCommande
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
