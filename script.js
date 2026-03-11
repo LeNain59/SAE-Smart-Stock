@@ -61,8 +61,7 @@ table.innerHTML += `
 <td>${c.Nb_Comp}</td>
 
 <td>
-<button onclick="envoyerCommande(${c.commande_id})">
-Envoyer ordre
+<button onclick="envoyerCommande('${c.commande_id}')">commande
 </button>
 </td>
 
@@ -136,6 +135,7 @@ window.envoyerCommande = envoyerCommande
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
