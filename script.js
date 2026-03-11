@@ -69,8 +69,8 @@ table.innerHTML += `
 async function commande(){
 
 const { error } = await supabase
-.from("COMMANDE")
-.update({commande_id: true })
+.from("BOITES")
+.update({id_comp: true })
 .eq("id", 1)
 
 if(error){
@@ -124,6 +124,7 @@ window.commande = commande
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
