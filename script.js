@@ -131,11 +131,12 @@ table.innerHTML += `
 window.loadBoites = loadBoites
 window.loadComposants = loadComposants
 window.searchComposants = searchComposants
-window.commande = commande
+
 window.envoyerCommande = envoyerCommande
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
