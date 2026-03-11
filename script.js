@@ -71,7 +71,7 @@ async function commande(){
 const { error } = await supabase
 .from("BOITES")
 .update({id_comp: true })
-.eq("id", 1)
+.eq("Num_Boite", 1)
 
 if(error){
 console.error("Erreur envoi commande :", error)
@@ -124,6 +124,7 @@ window.commande = commande
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
