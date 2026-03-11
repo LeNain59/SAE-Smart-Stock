@@ -70,7 +70,7 @@ async function commande(){
 
 const { error } = await supabase
 .from("COMMANDE")
-.update({ chose_commande: true })
+.update({ id_commande: true })
 .eq("id", 1)
 
 if(error){
@@ -124,6 +124,7 @@ window.commande = commande
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
