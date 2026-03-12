@@ -73,7 +73,51 @@ table.innerHTML += `
 })
 
 }
+async function ajouterBoite(){
 
+const { data } = await supabase
+.from("BOITES")
+.select("*")
+
+if(data.length >= 8){
+alert("Maximum 8 boîtes atteint")
+return
+}
+
+const { error } = await supabase
+.from("BOITES")
+.insert([
+{
+RFID_Boite: "nouvelle",
+Emplacement_Boite: data.length + 1,
+Masse_Boite: 0
+}
+])
+
+if(error){
+console.error(error)
+return
+}
+
+loadBoites()
+
+}
+
+async function supprimerBoite(id){
+
+const { error } = await supabase
+.from("BOITES")
+.delete()
+.eq("Num_Boite", id)
+
+if(error){
+console.error(error)
+return
+}
+
+loadBoites()
+
+}
 
 
 async function envoyerCommande(idCommande){
@@ -117,6 +161,12 @@ table.innerHTML += `
 <td>${b.RFID_Boite}</td>
 <td>${b.Emplacement_Boite}</td>
 <td>${b.Masse_Boite}</td>
+
+<td>
+<button onclick="supprimerBoite(${b.Num_Boite})">
+Supprimer
+</button>
+</td>
 </tr>
 `
 
@@ -134,9 +184,12 @@ window.loadComposants = loadComposants
 window.searchComposants = searchComposants
 
 window.envoyerCommande = envoyerCommande
+window.ajouterBoite = ajouterBoite
+window.supprimerBoite = supprimerBoite
 // chargement automatique
 loadBoites()
 loadComposants()
+
 
 
 
