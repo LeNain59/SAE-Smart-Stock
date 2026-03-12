@@ -63,7 +63,8 @@ table.innerHTML += `
 <td>${c.Nb_Comp}</td>
 
 <td>
-<button onclick="envoyerCommande('${c.commande_id}')">Prendre
+<button onclick="envoyerCommande('${c.commande_id}')">
+Prendre
 </button>
 </td>
 
@@ -73,53 +74,9 @@ table.innerHTML += `
 })
 
 }
-async function ajouterBoite(){
-
-const { data } = await supabase
-.from("BOITES")
-.select("*")
-
-if(data.length >= 8){
-alert("Maximum 8 boîtes atteint")
-return
-}
-
-const { error } = await supabase
-.from("BOITES")
-.insert([
-{
-RFID_Boite: "nouvelle",
-Emplacement_Boite: data.length + 1,
-Masse_Boite: 0
-}
-])
-
-if(error){
-console.error(error)
-return
-}
-
-loadBoites()
-
-}
-
-async function supprimerBoite(id){
-
-const { error } = await supabase
-.from("BOITES")
-.delete()
-.eq("Num_Boite", id)
-
-if(error){
-console.error(error)
-return
-}
-
-loadBoites()
-
-}
 
 
+// envoyer commande
 async function envoyerCommande(idCommande){
 
 const { error } = await supabase
@@ -138,6 +95,91 @@ return
 console.log("Commande envoyée")
 
 }
+
+
+// charger liste composants pour sélection
+async function chargerListeComposants(){
+
+const { data, error } = await supabase
+.from("COMPOSANT")
+.select("Nom_Comp")
+.order("Nom_Comp")
+
+if(error){
+console.error(error)
+return
+}
+
+const select = document.getElementById("selectComposant")
+select.innerHTML=""
+
+data.forEach(c => {
+
+select.innerHTML += `
+<option value="${c.Nom_Comp}">
+${c.Nom_Comp}
+</option>
+`
+
+})
+
+}
+
+
+// ajouter boite
+async function ajouterBoite(){
+
+const select = document.getElementById("selectComposant")
+const composantChoisi = select.value
+
+const { data } = await supabase
+.from("BOITES")
+.select("*")
+
+if(data.length >= 8){
+alert("Maximum 8 boîtes atteint")
+return
+}
+
+const { error } = await supabase
+.from("BOITES")
+.insert([
+{
+Nom_Comp: composantChoisi,
+RFID_Boite: "nouvelle",
+Emplacement_Boite: data.length + 1,
+Masse_Boite: 0
+}
+])
+
+if(error){
+console.error(error)
+return
+}
+
+loadBoites()
+
+}
+
+
+// supprimer boite
+async function supprimerBoite(id){
+
+const { error } = await supabase
+.from("BOITES")
+.delete()
+.eq("Num_Boite", id)
+
+if(error){
+console.error(error)
+return
+}
+
+loadBoites()
+
+}
+
+
 // charger boites
 async function loadBoites(){
 
@@ -158,6 +200,7 @@ data.forEach(b => {
 table.innerHTML += `
 <tr>
 <td>${b.Num_Boite}</td>
+<td>${b.Nom_Comp}</td>
 <td>${b.RFID_Boite}</td>
 <td>${b.Emplacement_Boite}</td>
 <td>${b.Masse_Boite}</td>
@@ -167,6 +210,7 @@ table.innerHTML += `
 Supprimer
 </button>
 </td>
+
 </tr>
 `
 
@@ -175,47 +219,16 @@ Supprimer
 }
 
 
-
-
-// rendre les fonctions accessibles au HTML
 // rendre les fonctions accessibles au HTML
 window.loadBoites = loadBoites
 window.loadComposants = loadComposants
 window.searchComposants = searchComposants
-
 window.envoyerCommande = envoyerCommande
 window.ajouterBoite = ajouterBoite
 window.supprimerBoite = supprimerBoite
+
+
 // chargement automatique
 loadBoites()
 loadComposants()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+chargerListeComposants()
