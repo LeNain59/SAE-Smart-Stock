@@ -63,7 +63,7 @@ table.innerHTML += `
 <td>${c.Nb_Comp}</td>
 
 <td>
-<button onclick="envoyerCommande('${c.commande_id}')">
+<button onclick="envoyerCommande('${c.commande_id}','${c.Nom_Comp}')">
 Prendre
 </button>
 </td>
@@ -77,7 +77,13 @@ Prendre
 
 
 // envoyer commande
-async function envoyerCommande(idCommande){
+async function envoyerCommande(idCommande, nom){
+
+const confirmation = confirm("Commander le composant : " + nom + " ?")
+
+if(!confirmation){
+return
+}
 
 const { error } = await supabase
 .from("COMMANDE")
@@ -92,7 +98,7 @@ console.error("Erreur commande :", error)
 return
 }
 
-console.log("Commande envoyée")
+alert("Commande envoyée")
 
 }
 
@@ -232,3 +238,4 @@ window.supprimerBoite = supprimerBoite
 loadBoites()
 loadComposants()
 chargerListeComposants()
+
