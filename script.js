@@ -171,7 +171,6 @@ const { error } = await supabase
 .insert([
 {
 Nom_Comp: composantChoisi,
-RFID_Boite: "nouvelle",
 Emplacement_Boite: emplacementChoisi,
 Masse_Boite: 0
 }
@@ -257,6 +256,7 @@ window.supprimerBoite = supprimerBoite
 loadBoites()
 loadComposants()
 chargerListeComposants()
+
 
 
 
