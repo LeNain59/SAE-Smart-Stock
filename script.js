@@ -168,9 +168,11 @@ return
 // insertion
 const { error } = await supabase
 .from("BOITES")
+  
 .insert([
 {
 Nom_Comp: composantChoisi,
+  RFID_Boite: "    ",
 Emplacement_Boite: emplacementChoisi,
 Masse_Boite: 0
 }
