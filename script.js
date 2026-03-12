@@ -135,9 +135,26 @@ ${c.Nom_Comp}
 // ajouter boite
 async function ajouterBoite(){
 
-const select = document.getElementById("selectComposant")
-const composantChoisi = select.value
+const selectComp = document.getElementById("selectComposant")
+const composantChoisi = selectComp.value
 
+const selectEmp = document.getElementById("selectEmplacement")
+const emplacementChoisi = parseInt(selectEmp.value)
+
+
+// vérifier si emplacement déjà utilisé
+const { data: boitesExistantes } = await supabase
+.from("BOITES")
+.select("*")
+.eq("Emplacement_Boite", emplacementChoisi)
+
+if(boitesExistantes.length > 0){
+alert("Cet emplacement est déjà occupé")
+return
+}
+
+
+// vérifier limite 8 boites
 const { data } = await supabase
 .from("BOITES")
 .select("*")
@@ -147,13 +164,15 @@ alert("Maximum 8 boîtes atteint")
 return
 }
 
+
+// insertion
 const { error } = await supabase
 .from("BOITES")
 .insert([
 {
 Nom_Comp: composantChoisi,
 RFID_Boite: "nouvelle",
-Emplacement_Boite: data.length + 1,
+Emplacement_Boite: emplacementChoisi,
 Masse_Boite: 0
 }
 ])
@@ -238,5 +257,6 @@ window.supprimerBoite = supprimerBoite
 loadBoites()
 loadComposants()
 chargerListeComposants()
+
 
 
