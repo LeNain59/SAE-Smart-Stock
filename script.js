@@ -104,31 +104,28 @@ alert("Commande envoyée")
 
 
 // charger liste composants pour sélection
-async function chargerListeComposants(){
+async function chargerListeComposants() {
+    const select = document.getElementById("selectComposant");
+    if (!select) {
+        console.error("Le select #selectComposant n'existe pas dans le DOM");
+        return;
+    }
 
-const { data, error } = await supabase
-.from("COMPOSANT")
-.select("Nom_Comp")
-.order("Nom_Comp")
+    const { data, error } = await supabase
+        .from("COMPOSANT")
+        .select("Nom_Comp")
+        .order("Nom_Comp");
 
-if(error){
-console.error(error)
-return
-}
+    if (error) {
+        console.error(error);
+        return;
+    }
 
-const select = document.getElementById("selectComposant")
-select.innerHTML=""
+    select.innerHTML = "";
 
-data.forEach(c => {
-
-select.innerHTML += `
-<option value="${c.Nom_Comp}">
-${c.Nom_Comp}
-</option>
-`
-
-})
-
+    data.forEach(c => {
+        select.innerHTML += `<option value="${c.Nom_Comp}">${c.Nom_Comp}</option>`;
+    });
 }
 
 
@@ -258,6 +255,7 @@ window.supprimerBoite = supprimerBoite
 loadBoites()
 loadComposants()
 chargerListeComposants()
+
 
 
 
