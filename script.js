@@ -202,7 +202,6 @@ loadBoites()
 
 }
 
-
 // charger boites
 async function loadBoites(){
 
@@ -220,13 +219,19 @@ table.innerHTML=""
 
 data.forEach(b => {
 
+let masseStock = "N/A"
+
+if(b.Masse_Actuel != null && b.Masse_min != null){
+masseStock = b.Masse_Actuel - b.Masse_min
+}
+
 table.innerHTML += `
 <tr>
 <td>${b.Num_Boite}</td>
 <td>${b.Nom_Comp}</td>
 <td>${b.RFID_Boite}</td>
 <td>${b.Emplacement_Boite}</td>
-<td>${b.Masse_Boite}</td>
+<td>${masseStock}</td>
 
 <td>
 <button onclick="supprimerBoite(${b.Num_Boite})">
@@ -255,6 +260,7 @@ window.supprimerBoite = supprimerBoite
 loadBoites()
 loadComposants()
 chargerListeComposants()
+
 
 
 
